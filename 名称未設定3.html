@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLOR | 立川駅南口の上質なサードプレイス</title>
+    <meta name="description" content="立川駅南口徒歩2分。総工費1700万のモダンラグジュアリー空間で、洗練されたキャストとの上質な時間をお楽しみください。">
+    
+    <link rel="icon" href="apple-touch-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;700&family=Noto+Serif+JP:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #080914; --surface-color: rgba(20, 25, 45, 0.6); --text-main: #f0f4f8; 
+            --primary-accent: #00e5ff; --secondary-accent: #d22cff; --gold: #e8c35d;
+            --neon-purple-glow: 0 0 10px rgba(210, 44, 255, 0.6), 0 0 20px rgba(210, 44, 255, 0.4), 0 0 40px rgba(210, 44, 255, 0.2);
+            --pink-petal: #FF69B4; --pink-petal-glow: 0 0 10px rgba(255, 105, 180, 0.8), 0 0 25px rgba(255, 105, 180, 0.6);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Noto Serif JP', serif; font-weight: 300; background-color: var(--bg-base); color: var(--text-main); line-height: 1.8; overflow-x: hidden; background-image: radial-gradient(circle at 20% 30%, rgba(210, 44, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(210, 44, 255, 0.1) 0%, transparent 50%); background-attachment: fixed; padding-bottom: 60px; }
+
+        /* Header - 固定表示を維持 */
+        .site-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 2000; background: rgba(8, 9, 20, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(210, 44, 255, 0.5); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .header-logo { font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--secondary-accent); text-shadow: var(--neon-purple-glow); text-decoration: none; font-weight: 700; letter-spacing: 4px; flex-shrink: 0; }
+        .desktop-nav { display: flex; gap: 2vw; align-items: center; }
+        .desktop-nav a { color: #fff; text-decoration: none; font-size: 1.1rem; letter-spacing: 2px; transition: color 0.3s; font-family: 'Cinzel', serif; text-shadow: 0 0 5px rgba(255,255,255,0.3); white-space: nowrap; text-transform: uppercase;}
+        .desktop-nav a:hover { color: var(--secondary-accent); text-shadow: var(--neon-purple-glow); }
+        
+        .header-right { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+        .header-contact { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .header-tel { color: #fff; font-size: 1.2rem; font-weight: bold; text-decoration: none; letter-spacing: 1px; transition: all 0.3s; line-height: 1;}
+        .header-tel:hover { color: var(--secondary-accent); text-shadow: var(--neon-purple-glow); }
+        
+        .header-insta { display: flex; align-items: center; gap: 5px; color: #ccc; font-size: 0.85rem; text-decoration: none; letter-spacing: 2px; font-family: 'Cinzel', serif; transition: all 0.3s; line-height: 1;}
+        .header-insta:hover { color: var(--pink-petal); text-shadow: var(--pink-petal-glow); }
+        .header-insta::before { content: ''; display: inline-block; width: 14px; height: 14px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border-radius: 4px; }
+
+        .mobile-menu-btn { display: none; color: var(--secondary-accent); font-size: 2.2rem; cursor: pointer; background: none; border: none; text-shadow: var(--neon-purple-glow); }
+        
+        /* Mobile Nav Overlay */
+        .mobile-nav-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(8, 9, 20, 0.98); z-index: 1999; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .mobile-nav-overlay.active { opacity: 1; pointer-events: auto; }
+        .mobile-nav-overlay a { color: #fff; text-decoration: none; font-size: 1.3rem; margin: 15px 0; letter-spacing: 4px; font-family: 'Cinzel', serif; transition: color 0.3s; text-shadow: 0 0 10px rgba(255,255,255,0.5); text-transform: uppercase; }
+        .mobile-nav-overlay a:hover { color: var(--secondary-accent); text-shadow: var(--neon-purple-glow); }
+
+        @media (max-width: 1250px) { .desktop-nav { display: none; } .mobile-menu-btn { display: block; } .site-header { padding: 15px 20px; } .header-logo { font-size: 1.8rem; } .header-tel { font-size: 1rem; } .header-insta { font-size: 0.75rem;} }
+
+        /* Petals */
+        .petals { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+        .petal { position: absolute; top: -10%; background: linear-gradient(135deg, var(--pink-petal), transparent); border-radius: 15px 0 15px 0; opacity: 0.95; box-shadow: var(--pink-petal-glow); animation: fall linear infinite; }
+        .petal:nth-child(1) { left: 15%; width: 16px; height: 16px; animation-duration: 18s; }
+        .petal:nth-child(2) { left: 35%; width: 22px; height: 22px; animation-duration: 24s; animation-delay: 4.5s; background: linear-gradient(135deg, #FF1493, transparent); }
+        .petal:nth-child(3) { left: 65%; width: 14px; height: 14px; animation-duration: 15s; animation-delay: 1.5s; }
+        .petal:nth-child(4) { left: 85%; width: 20px; height: 20px; animation-duration: 21s; animation-delay: 7.5s; background: linear-gradient(135deg, #FF1493, transparent); }
+        @keyframes fall { 100% { transform: translateY(110vh) rotate(720deg) translateX(50px); opacity: 0; } }
+
+        .sp-only { display: none; }
+        .container { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 100px 20px 0; }
+        section { padding: 90px 0; border-bottom: 1px solid rgba(210, 44, 255, 0.15); scroll-margin-top: 90px; }
+        h2.section-title { font-family: 'Cinzel', serif; text-align: center; font-size: clamp(2rem, 5vw, 3rem); color: var(--secondary-accent); margin-bottom: 50px; text-shadow: var(--neon-purple-glow); letter-spacing: 3px; font-weight: 700; text-transform: uppercase; }
+        .glass-box { background: var(--surface-color); backdrop-filter: blur(10px); padding: 50px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); text-align: center; font-size: 1.1rem;}
+
+        /* Hero */
+        .hero { min-height: calc(100vh - 100px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .logo-wrapper { width: 100%; max-width: 450px; margin-bottom: 40px; position: relative;}
+        .animated-logo { width: 100%; height: auto; position: relative; z-index: 3;}
+        .anim-path, .anim-text { fill: transparent; stroke: #ffffff; stroke-width: 1.5; stroke-dasharray: 1500; stroke-dashoffset: 1500; animation: draw-lines 2.5s ease-in-out forwards, flash-neon 0.5s 2.5s forwards, color-pulse-once 2s 3s forwards ease-in-out; }
+        .anim-text { font-family: 'Cinzel', serif; animation: draw-lines 2.5s 0.5s ease-in-out forwards, flash-neon 0.5s 2.5s forwards, color-pulse-once 2s 3s forwards ease-in-out; }
+        @keyframes draw-lines { 100% { stroke-dashoffset: 0; } }
+        @keyframes flash-neon { 0% { fill: transparent; stroke: #ffffff; filter: drop-shadow(0 0 0 transparent); } 100% { fill: #ffffff; stroke: #ffffff; filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)); } }
+        @keyframes color-pulse-once { 0% { fill: #ffffff; stroke: #ffffff; filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)); } 100% { fill: var(--secondary-accent); stroke: var(--secondary-accent); filter: drop-shadow(var(--neon-purple-glow)); } }
+        
+        .burst-particle { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; background: #fff; border-radius: 50%; opacity: 0; z-index: -1; animation: burst-dynamic 4s ease-out; pointer-events: none; }
+        @keyframes burst-dynamic { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 80% { opacity: 1; } 100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.5); opacity: 0; } }
+
+        .animated-catchphrase { font-family: 'Noto Serif JP', serif; font-size: clamp(1.2rem, 4vw, 3rem); font-weight: 700; background: linear-gradient(45deg, var(--primary-accent), var(--secondary-accent), #fff); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-text 3s ease infinite, glow-pulse-text 2s ease-in-out infinite alternate; margin-bottom: 40px; line-height: 1.6; letter-spacing: 2px; display: block; white-space: nowrap; }
+        @keyframes gradient-text { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes glow-pulse-text { 0% { filter: drop-shadow(0 0 5px var(--secondary-accent)); } 100% { filter: drop-shadow(0 0 15px var(--primary-accent)); } }
+
+        .hero-coupon { display: inline-block; padding: 20px 40px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); border: 2px solid transparent; border-radius: 50px; position: relative; overflow: hidden; box-shadow: 0 0 15px rgba(232, 195, 93, 0.3); animation: float-coupon 3s ease-in-out infinite; text-decoration: none; cursor: pointer; }
+        .hero-coupon::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, var(--gold), transparent, var(--gold), transparent); animation: rotate-glow 4s linear infinite; z-index: 1; }
+        .hero-coupon::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; background: rgba(0, 0, 0, 0.9); border-radius: 48px; z-index: 2; }
+        .coupon-content-wrapper { position: relative; z-index: 3; }
+        @keyframes rotate-glow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes float-coupon { 0%, 100% { transform: translateY(0); box-shadow: 0 0 15px rgba(232, 195, 93, 0.3); } 50% { transform: translateY(-5px); box-shadow: 0 0 25px rgba(232, 195, 93, 0.6); } }
+        .coupon-title { display: block; font-size: 1rem; color: var(--text-main); letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase;}
+        .coupon-price { font-size: 1.5rem; color: var(--gold); font-weight: bold; letter-spacing: 2px; }
+        .coupon-price .price-num { font-family: 'Cinzel', serif; font-size: clamp(2rem, 6vw, 3rem); text-shadow: 0 0 10px rgba(232, 195, 93, 0.5); }
+
+        .cta-button { display: inline-block; background: linear-gradient(45deg, rgba(8,9,20,0.8), rgba(210, 44, 255, 0.5)); border: 1px solid var(--secondary-accent); color: #fff; text-decoration: none; padding: 20px 60px; border-radius: 50px; font-size: 1.3rem; font-weight: bold; box-shadow: var(--neon-purple-glow); transition: all 0.3s ease; text-align: center; margin-top: 20px; text-transform: uppercase;}
+        .cta-button:hover { transform: translateY(-3px); filter: brightness(1.2); }
+        .btn-small { padding: 15px 40px; font-size: 1.1rem; margin-top: 20px; }
+        .highlight { color: var(--gold); }
+
+        /* Cast Carousel */
+        .carousel-wrapper { width: 100%; overflow: hidden; position: relative; padding: 20px 0; }
+        .cast-track { display: flex; gap: 40px; }
+        .cast-card { width: 350px; flex: 0 0 350px; background: transparent; padding: 3px; border-radius: 12px; border: none; cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.3s ease; text-decoration: none;}
+        .cast-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, var(--secondary-accent), transparent, var(--pink-petal), transparent); animation: rotate-glow 8s linear infinite; z-index: 1; }
+        .cast-card::after { content: ''; position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px; background: var(--surface-color); border-radius: 10px; z-index: 2; backdrop-filter: blur(5px); }
+        .cast-content-wrapper { position: relative; z-index: 3; padding: 20px; border-radius: 10px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
+        .cast-card:hover { animation: cast-shake-intense 0.4s ease-out; box-shadow: 0 0 30px var(--secondary-accent), inset 0 0 10px var(--pink-petal); }
+        @keyframes cast-shake-intense { 0%, 100% { transform: scale(0.98) translateX(0); } 20% { transform: scale(0.98) translateX(-5px) rotate(-2deg); } 40% { transform: scale(0.98) translateX(5px) rotate(2deg); } 60% { transform: scale(0.98) translateX(-5px) rotate(-2deg); } 80% { transform: scale(0.98) translateX(5px) rotate(2deg); } }
+        .cast-photo { width: 100%; height: 450px; border-radius: 8px; margin-bottom: 20px; object-fit: cover; border: 2px solid var(--secondary-accent); transition: all 0.3s ease;}
+        .cast-card:hover .cast-photo { border-color: var(--pink-petal); filter: brightness(1.1); }
+        .cast-name { font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: 4px; text-shadow: var(--neon-purple-glow);}
+        .cast-hint { font-size: 0.9rem; color: var(--secondary-accent); margin-top: 8px; font-family: 'Cinzel', serif; letter-spacing: 2px;}
+
+        /* Others */
+        .greeting-content { display: flex; flex-direction: column; align-items: center; line-height: 2.2; font-size: 1.2rem;}
+        .interior-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px; }
+        .interior-img { width: 100%; height: 350px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(210, 44, 255, 0.3); box-shadow: var(--neon-purple-glow); transition: transform 0.3s ease; }
+        .interior-img:hover { transform: scale(1.02); }
+        .blog-wrapper { position: relative; width: 100%; height: 600px; border-radius: 12px; overflow: hidden; border: 1px solid var(--secondary-accent); margin-bottom: 20px; background: #000; box-shadow: var(--neon-purple-glow); }
+        .blog-wrapper iframe { position: absolute; top: -380px; left: 0; width: 100%; height: 1000px; border: none; }
+        
+        .system-table { width: 100%; max-width: 800px; margin: 0 auto; border-collapse: collapse; color: #fff; }
+        .system-table th { text-align: left; padding: 25px 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: normal; font-size: 1.2rem;}
+        .system-table td { text-align: right; padding: 25px 15px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 1.5rem; font-family: 'Cinzel', serif;}
+        .system-note { margin-top: 30px; font-size: 0.9rem; color: #ccc; text-align: center; letter-spacing: 1px; }
+
+        .bottom-action-bar { position: fixed; bottom: 0; left: 0; width: 100%; display: flex; z-index: 1000; background: rgba(8, 9, 20, 0.85); backdrop-filter: blur(10px); border-top: 1px solid rgba(210, 44, 255, 0.5); box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5); }
+        .fab-btn { flex: 1; text-align: center; padding: 18px 0; font-weight: bold; color: #fff; text-decoration: none; font-size: 1.1rem; display: flex; justify-content: center; gap: 8px; letter-spacing: 2px;}
+        .fab-btn:first-child { background: linear-gradient(45deg, rgba(8, 9, 20, 0.9), rgba(210, 44, 255, 0.15)); border-right: 1px solid rgba(255,255,255,0.1); }
+        .fab-btn:last-child { background: rgba(6, 199, 85, 0.15); }
+        .bgm-toggle-btn { position: fixed; bottom: 90px; right: 20px; z-index: 999; background: rgba(210, 44, 255, 0.15); border: 1px solid var(--secondary-accent); color: #fff; padding: 10px 18px; border-radius: 50px; cursor: pointer; backdrop-filter: blur(10px); box-shadow: var(--neon-purple-glow); font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; transition: all 0.3s ease; }
+        .bgm-toggle-btn:hover { background: rgba(210, 44, 255, 0.4); transform: scale(1.05); }
+        .bgm-toggle-btn.playing { border-color: #fff; box-shadow: 0 0 15px #fff; }
+
+        /* Footer */
+        .site-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; padding: 50px 40px 30px; background-color: #030408; border-top: 1px solid rgba(210, 44, 255, 0.3); position: relative; }
+        .footer-left { flex: 0 0 auto; text-align: left; line-height: 1.6; }
+        .footer-logo { font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--secondary-accent); text-shadow: var(--neon-purple-glow); text-decoration: none; font-weight: bold; display: block; margin-bottom: 5px; letter-spacing: 4px; }
+        .footer-left p { font-size: 1rem; color: #ccc; margin-bottom: 5px; letter-spacing: 1px; }
+        
+        .footer-insta { display: inline-flex; align-items: center; gap: 8px; color: #ccc; text-decoration: none; font-size: 0.9rem; margin-top: 5px; letter-spacing: 1px; font-family: 'Cinzel', serif; transition: color 0.3s;}
+        .footer-insta:hover { color: var(--pink-petal); text-shadow: var(--pink-petal-glow); }
+        .insta-icon-small { width: 14px; height: 14px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border-radius: 4px; }
+
+        .footer-right { flex: 1; display: flex; justify-content: flex-end; }
+        .footer-nav { display: flex; flex-wrap: nowrap; gap: 2vw; align-items: center; }
+        .footer-nav a { color: #ccc; text-decoration: none; font-family: 'Cinzel', serif; letter-spacing: 1px; transition: color 0.3s; font-size: 0.9rem; white-space: nowrap; text-transform: uppercase;}
+        .footer-nav a:hover { color: var(--secondary-accent); text-shadow: var(--neon-purple-glow); }
+        .copyright { width: 100%; text-align: center; margin-top: 40px; font-family: 'Cinzel', serif; font-size: 0.7rem; color: #555; letter-spacing: 2px;}
+
+        /* === スマホUI最適化 === */
+        @media (max-width: 768px) {
+            body { padding-bottom: 0; } 
+            .sp-only { display: inline; }
+            .animated-catchphrase { font-size: 4.5vw; white-space: normal; word-break: keep-all; padding: 0 10px; }
+            .hero-coupon { padding: 15px 20px; width: 90%; }
+            .glass-box { padding: 30px 15px; font-size: 1rem; }
+            .system-table th { padding: 15px 5px; font-size: 0.85rem; }
+            .system-table td { padding: 15px 5px; font-size: 1.1rem; }
+            .cast-track { gap: 15px; }
+            .cast-card { flex: 0 0 40vw; padding: 2px; } 
+            .cast-photo { height: 50vw; margin-bottom: 10px; }
+            .cast-name { font-size: 1.2rem; letter-spacing: 1px; margin-bottom: 0;}
+            .cast-hint { display: none; }
+            .cast-content-wrapper { padding: 10px 5px; }
+            .interior-img { height: 200px; }
+            .interior-gallery { grid-template-columns: 1fr; gap: 15px;}
+            .bottom-action-bar { position: relative; box-shadow: none; flex-direction: column; }
+            .fab-btn { padding: 20px 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .bgm-toggle-btn { bottom: 20px; }
+            .site-footer { flex-direction: column; align-items: center; text-align: center; gap: 30px; padding: 40px 20px 30px;}
+            .footer-right { justify-content: center; }
+            .footer-nav { flex-wrap: wrap; justify-content: center; gap: 15px; } 
+        }
+    </style>
+</head>
+<body id="top">
+
+    <header class="site-header">
+        <a href="index.html" class="header-logo">FLOR</a>
+        <nav class="desktop-nav">
+            <a href="cast.html">CAST</a>
+            <a href="#greeting">ABOUT US</a>
+            <a href="#concept">GALLERY</a>
+            <a href="#todays-cast">NEWS</a>
+            <a href="#event">EVENT</a>
+            <a href="system.html">SYSTEM</a>
+            <a href="#access">ACCESS</a>
+            <a href="recruit.html">RECRUIT</a>
+        </nav>
+        
+        <div class="header-right">
+            <div class="header-contact">
+                <a href="tel:08068970421" class="header-tel">📞 080-6897-0421</a>
+                <a href="https://www.instagram.com/flor.9.23/" target="_blank" class="header-insta">Instagram</a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </header>
+
+    <div class="mobile-nav-overlay" id="mobileNav">
+        <a href="#cast" onclick="toggleMobileMenu()">CAST</a>
+        <a href="#greeting" onclick="toggleMobileMenu()">ABOUT US</a>
+        <a href="#concept" onclick="toggleMobileMenu()">GALLERY</a>
+        <a href="#todays-cast" onclick="toggleMobileMenu()">NEWS</a>
+        <a href="#event" onclick="toggleMobileMenu()">EVENT</a>
+        <a href="system.html" onclick="toggleMobileMenu()">SYSTEM</a>
+        <a href="#access" onclick="toggleMobileMenu()">ACCESS</a>
+        <a href="recruit.html" onclick="toggleMobileMenu()">RECRUIT</a>
+        <button onclick="toggleMobileMenu()" style="margin-top:40px; background:none; border:1px solid var(--secondary-accent); color:var(--secondary-accent); padding:10px 40px; border-radius:30px; font-family:'Cinzel'; cursor:pointer; letter-spacing: 2px;">CLOSE</button>
+    </div>
+
+    <div class="petals">
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+    </div>
+
+    <div class="bgm-toggle-btn" id="bgmBtn" onclick="toggleBgm()">🔇 BGM OFF</div>
+    <audio id="bgmAudio" loop src="bgm.mp3"></audio>
+
+    <div class="container">
+        <section class="hero">
+            <div class="logo-wrapper" id="logoCenter">
+                <svg class="animated-logo" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+                    <path class="anim-path" d="M 120,20 L 120,130 M 120,20 L 170,20 M 120,70 L 150,70 M 110,130 L 130,130" stroke-linecap="round" />
+                    <path class="anim-path" d="M 170,20 Q 190,30 170,60 T 180,90 Q 160,110 130,90" fill="none" stroke-linecap="round" />
+                    <text class="anim-text" x="150" y="160" text-anchor="middle" font-size="18" letter-spacing="4">GIRLS BAR</text>
+                    <text class="anim-text" x="150" y="195" text-anchor="middle" font-size="38" font-weight="bold" letter-spacing="8">FLOR</text>
+                </svg>
+            </div>
+            
+            <p class="animated-catchphrase">知性と美が交差する、立川の新たな隠れ家</p>
+            <a href="system.html" class="hero-coupon">
+                <div class="coupon-content-wrapper">
+                    <span class="coupon-title">ご新規様限定 Special Price</span>
+                    <div class="coupon-price">初回40分 <span class="price-num">1,980</span>円</div>
+                </div>
+            </a>
+        </section>
+
+        <section id="cast">
+            <h2 class="section-title">CAST</h2>
+            <div class="carousel-wrapper">
+                <div class="cast-track" id="castTrack">
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="nene.jpg" class="cast-photo"><p class="cast-name">ねね</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="koko.jpg" class="cast-photo"><p class="cast-name">ここ</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="rina.jpg" class="cast-photo"><p class="cast-name">りな</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="non.jpg" class="cast-photo"><p class="cast-name">のん</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="haru.jpg" class="cast-photo"><p class="cast-name">はる</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="hachi.jpg" class="cast-photo"><p class="cast-name">ハチ</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="nao.jpg" class="cast-photo"><p class="cast-name">菜桜</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="nana.jpg" class="cast-photo"><p class="cast-name">なな</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="rena.jpg" class="cast-photo"><p class="cast-name">れな</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="sakura.jpg" class="cast-photo"><p class="cast-name">さくら</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="yume.jpg" class="cast-photo"><p class="cast-name">ゆめ</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="ririna.jpg" class="cast-photo"><p class="cast-name">りりな</p><p class="cast-hint">See All Casts</p></div></a>
+                    <a href="cast.html" class="cast-card"><div class="cast-content-wrapper"><img src="yuzuha.jpg" class="cast-photo"><p class="cast-name">ゆずは</p><p class="cast-hint">See All Casts</p></div></a>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="cast.html" class="cta-button btn-small">SEE ALL CASTS</a>
+            </div>
+        </section>
+
+        <section id="greeting">
+            <h2 class="section-title">ABOUT US</h2>
+            <div class="glass-box greeting-content">
+                <p style="margin-bottom: 20px;">
+                    立川の夜を彩るFLORへようこそ。<br>
+                    私たちが目指すのは、<br class="sp-only">単なるガールズバーではありません。<br>
+                    総工費1700万円を投じた、<br class="sp-only">韓国系モダンラグジュアリーな空間。<br>
+                    厳しい基準をクリアした、<br class="sp-only">洗練されたキャストとの会話。<br>
+                    日常の喧騒を離れ、<br class="sp-only">特別な時間を過ごしていただけるよう、<br class="sp-only">スタッフ一同、<br class="sp-only">心を込めておもてなしいたします。
+                </p>
+                <a href="https://lit.link/gachiokoflor" target="_blank" class="cta-button btn-small">公式 lit.link をチェック</a>
+            </div>
+        </section>
+
+        <section id="concept">
+            <h2 class="section-title">GALLERY</h2>
+            <div class="interior-gallery">
+                <img src="Unknown-1.jpeg" class="interior-img">
+                <img src="Unknown.jpeg" class="interior-img">
+            </div>
+            <div class="glass-box">
+                <p>総工費1700万円。<br>最新の韓国系テイストとモダンラグジュアリーが融合した、<br>紫色のネオンに満ちた上質な空間。<br><br>価値ある時間をお過ごしいただくための、大人のためのサードプレイスです。</p>
+            </div>
+        </section>
+
+        <section id="todays-cast">
+            <h2 class="section-title">NEWS</h2>
+            <div class="glass-box">
+                <h3 style="color: #fff; font-size: clamp(1.2rem, 4vw, 1.6rem); margin-bottom: 15px; text-shadow: var(--neon-purple-glow);">本日の出勤情報はブログで毎日更新中！</h3>
+                <div class="blog-wrapper">
+                    <iframe src="https://www.pokepara.jp/tokyo/m110/a10143/shop20507/blog/" scrolling="yes"></iframe>
+                </div>
+                <a href="https://www.pokepara.jp/tokyo/m110/a10143/shop20507/blog/" target="_blank" class="cta-button btn-small">📝 ブログを別画面で開く</a>
+            </div>
+        </section>
+        
+        <section id="event">
+            <h2 class="section-title">EVENT</h2>
+            <div class="glass-box">
+                <h3 style="color: #fff; font-size: clamp(1.2rem, 4vw, 1.6rem); margin-bottom: 15px; text-shadow: var(--neon-purple-glow);">イベント情報</h3>
+                <div class="blog-wrapper">
+                    <iframe src="https://www.pokepara.jp/tokyo/m110/a10143/shop20507/event.html" scrolling="yes"></iframe>
+                </div>
+                <a href="https://www.pokepara.jp/tokyo/m110/a10143/shop20507/event.html" target="_blank" class="cta-button btn-small">📝 イベント詳細を見る</a>
+            </div>
+        </section>
+
+        <section id="system">
+            <h2 class="section-title">SYSTEM</h2>
+            <div class="glass-box">
+                <table class="system-table">
+                    <tr><th>【ご新規様】初回40分 (〜22:00)</th><td><span class="highlight">¥1,980</span></td></tr>
+                    <tr><th>【ご新規様】初回40分 (22:00〜)</th><td><span class="highlight">¥2,500</span></td></tr>
+                    <tr><th>通常セット (40分)</th><td>¥3,300</td></tr>
+                    <tr><th>ご延長 (20分)</th><td>¥1,800</td></tr>
+                    <tr><th>ご延長 (40分)</th><td>¥3,300</td></tr>
+                    <tr><th>本指名</th><td>¥2,000</td></tr>
+                    <tr><th>キャストドリンク</th><td>¥1,000</td></tr>
+                    <tr><th>TAX / サービス料</th><td>20%</td></tr>
+                    <tr><th style="color: var(--primary-accent);">予算の目安</th><td><span class="highlight">¥4,000</span></td></tr>
+                </table>
+                <p class="system-note">※クレジットカードでのお支払いの場合は、別途10%の手数料を頂戴いたします。</p>
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="system.html" class="cta-button btn-small">SYSTEM DETAIL</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="access">
+            <h2 class="section-title">ACCESS</h2>
+            <div class="glass-box access-info">
+                <p><strong style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: #fff;">FLOR</strong></p>
+                <p>東京都立川市錦町1-3-21 WATER BLD 5F<br>
+                <span style="color: var(--pink-petal); font-size: 0.9rem;">※東京パンダ麻辣湯の左手のエレベーターから上がれます</span></p>
+                <p>JR「立川駅」南口 徒歩2分<br>多摩モノレール「立川南駅」2番出口 徒歩4分</p>
+                <p>営業時間：19:00 ～ LAST（日曜定休）</p>
+                <p style="margin-top: 30px;">
+                    <a href="https://www.google.com/maps/place/FLOR/@35.6964321,139.4126183,17z/data=!3m1!4b1!4m6!3m5!1s0x6018e13245888efb:0x83893e82cb5bb838!8m2!3d35.6964278!4d139.4151932!16s%2Fg%2F11wpzt52k8?entry=ttu&g_ep=EgoyMDI2MDMzMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="cta-button">📍 Google Mapで経路を確認する</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="recruit-banner" style="border: none;">
+            <div class="glass-box" style="width: 100%; max-width: 800px; margin: 0 auto;">
+                <h3 style="color: #fff; font-size: 1.8rem; margin-bottom: 15px; text-shadow: var(--neon-purple-glow);">キャスト求人募集</h3>
+                <p style="font-size: 1.1rem;">FLORでは一緒に働くキャストを募集しています。<br>未経験歓迎・ノルマなしの働きやすい環境です。</p>
+                <a href="recruit.html" class="cta-button btn-small" style="width: auto; padding: 15px 50px; margin: 30px auto 0;">求人情報を見る</a>
+            </div>
+        </section>
+    </div>
+
+    <div class="bottom-action-bar">
+        <a href="tel:08068970421" class="fab-btn">📞 RESERVE BY PHONE</a>
+        <a href="https://line.me/R/ti/p/@177fvyxk?oat_content=url&ts=04021844" target="_blank" class="fab-btn">💬 RESERVE BY LINE</a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-left">
+            <a href="index.html" class="footer-logo">FLOR</a>
+            <p>東京都立川市錦町1-3-21 WATER BLD 5F</p>
+            <p>TEL: 080-6897-0421</p>
+            <a href="https://www.instagram.com/flor.9.23/" target="_blank" class="footer-insta">
+                <span class="insta-icon-small"></span> @flor.9.23
+            </a>
+        </div>
+        <div class="footer-right">
+            <nav class="footer-nav">
+                <a href="#top">TOP</a>
+                <a href="#cast">CAST</a>
+                <a href="#greeting">ABOUT US</a>
+                <a href="system.html">SYSTEM</a>
+                <a href="recruit.html">RECRUIT</a>
+            </nav>
+        </div>
+        <div class="copyright"><p>© 2026 FLOR. All Rights Reserved.</p></div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() { document.getElementById('mobileNav').classList.toggle('active'); }
+        
+        let isPlaying = false;
+        function toggleBgm() {
+            const bgmAudio = document.getElementById('bgmAudio');
+            const bgmBtn = document.getElementById('bgmBtn');
+            if (isPlaying) { bgmAudio.pause(); bgmBtn.innerHTML = '🔇 BGM OFF'; isPlaying = false; }
+            else { bgmAudio.play(); bgmBtn.innerHTML = '🔊 BGM ON'; isPlaying = true; }
+        }
+
+        const logoTarget = document.getElementById('logoCenter');
+        const purpleColors = ['rgba(181, 51, 255, 0.9)', 'rgba(138, 43, 226, 0.9)', 'rgba(218, 112, 214, 0.9)'];
+        function createBurst() {
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'burst-particle';
+                particle.style.boxShadow = `0 0 10px #fff, 0 0 20px ${purpleColors[Math.floor(Math.random()*3)]}`;
+                particle.style.setProperty('--tx', (Math.random()-0.5)*350+'px');
+                particle.style.setProperty('--ty', (Math.random()-0.5)*350+'px');
+                logoTarget.appendChild(particle);
+                setTimeout(() => particle.remove(), 4500);
+            }
+        }
+        setInterval(createBurst, 4000); createBurst();
+
+        let isSliding = false;
+        let isCastVisible = false;
+        let hasStartedOnce = false;
+        
+        const castSectionElement = document.getElementById('cast');
+        if (castSectionElement) {
+            const observer = new IntersectionObserver((entries) => {
+                const isIntersecting = entries[0].isIntersecting;
+                if (isIntersecting && !hasStartedOnce) {
+                    setTimeout(() => {
+                        isCastVisible = true;
+                        hasStartedOnce = true;
+                    }, 5000); 
+                } else {
+                    isCastVisible = isIntersecting;
+                }
+            }, { threshold: 0.1 });
+            observer.observe(castSectionElement);
+        }
+
+        function autoSlideCast() {
+            if (isSliding || !isCastVisible) return; 
+            isSliding = true;
+            
+            const track = document.getElementById('castTrack');
+            if(!track || track.children.length === 0) { isSliding = false; return; }
+            
+            const cards = Array.from(track.children);
+            const cardWidth = cards[0].offsetWidth;
+            const gap = parseFloat(window.getComputedStyle(track).gap) || 0; 
+            const totalCardWidth = cardWidth + gap;
+            const containerWidth = track.parentElement.offsetWidth;
+            
+            let visibleCardsCount = Math.floor(containerWidth / totalCardWidth) || 1;
+            const moveDistance = visibleCardsCount * totalCardWidth;
+            
+            track.style.transition = 'transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            track.style.transform = `translateX(-${moveDistance}px)`;
+            
+            setTimeout(() => {
+                track.style.transition = 'none';
+                for (let i = 0; i < visibleCardsCount; i++) {
+                    track.appendChild(track.firstElementChild); 
+                }
+                track.style.transform = 'translateX(0)';
+                isSliding = false;
+            }, 1200); 
+        }
+        setInterval(autoSlideCast, 5000);
+    </script>
+</body>
+</html>
